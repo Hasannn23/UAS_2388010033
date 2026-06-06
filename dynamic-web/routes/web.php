@@ -4,10 +4,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-// Redirect root to dashboard (which will redirect to login if unauthenticated)
+// Redirect root to dashboard
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
+
+// Public Routes
+Route::get('/dashboard', [ProductController::class, 'index'])->name('dashboard');
 
 // Authentication Guest Routes
 Route::middleware('guest')->group(function () {
@@ -20,9 +23,6 @@ Route::middleware('guest')->group(function () {
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
-    // Dashboard index (lists products, shows stats, search, etc.)
-    Route::get('/dashboard', [ProductController::class, 'index'])->name('dashboard');
-    
     // Custom logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
