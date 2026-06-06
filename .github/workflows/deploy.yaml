@@ -1,9 +1,9 @@
-name: Deploy  Next.js to AWS EC2
+name: Deploy Web Statis to AWS EC2
 on:
   push:
     branches: [ main ]
     paths:
-      - 'web-static/**'
+      - 'static-web/**'
       - '.github/workflows/deploy.yaml'
 jobs:
   build-and-deploy:
@@ -19,7 +19,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./web-static
+        context: ./static-web
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/uas-statis:latest
   deploy:
@@ -35,6 +35,6 @@ jobs:
         key: ${{ secrets.AWS_PRIVATE_KEY }}
         port: 22
         script: |
-          docker rm -f uas-statis || true
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/uas-statis:latest
-          docker run -d --name uas-statis -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/uas-statis:latest
+          sudo docker rm -f uas-statis || true
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/uas-statis:latest
+          sudo docker run -d --name uas-statis -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/uas-statis:latest
