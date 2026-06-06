@@ -72,6 +72,8 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/uas-dinamis:latest 2>&1 | tee -a deploy.log
 
             # Recreate all containers
+            echo "Stopping conflicting raw containers..." | tee -a deploy.log
+            sudo docker rm -f uas-statis uas-dinamis db-webdinamis || true
             echo "Starting docker compose..." | tee -a deploy.log
             sudo DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} AWS_HOST=${{ secrets.AWS_HOST }} docker compose up -d --force-recreate 2>&1 | tee -a deploy.log
 

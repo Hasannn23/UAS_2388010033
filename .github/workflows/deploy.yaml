@@ -64,6 +64,7 @@ jobs:
 
           # Recreate static-web container
           echo "Restarting static-web container..."
+          sudo docker rm -f uas-statis || true
           sudo DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} AWS_HOST=${{ secrets.AWS_HOST }} docker compose up -d --force-recreate static-web
 
           # Clean up old images
