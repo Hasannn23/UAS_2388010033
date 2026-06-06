@@ -37,15 +37,16 @@ COPY --from=frontend-builder /app/public/build ./public/build
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Install composer dependencies
+# Install composer dependencies (using --no-scripts to prevent execution of artisan commands during build)
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install --no-interaction --optimize-autoloader --no-dev
+RUN composer install --no-interaction --optimize-autoloader --no-dev --no-scripts
 
 # Expose port 8000
 EXPOSE 8000
 
-# Script to run migrations/seeding and start php artisan serve
+# Script to run migrations/seeding, discover packages, and start php artisan serve
 CMD php artisan key:generate --force && \
+    php artisan package:discover --ansi && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
