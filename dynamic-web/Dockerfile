@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Run the Laravel application
-FROM php:8.3-cli-alpine
+FROM php:8.4-cli-alpine
 WORKDIR /var/www/html
 
 # Install system dependencies & PHP extensions
