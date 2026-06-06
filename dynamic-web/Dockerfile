@@ -31,6 +31,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy application files
 COPY . .
 
+# Copy environment file
+RUN cp .env.example .env
+
 # Copy Vite built assets from Stage 1
 COPY --from=frontend-builder /app/public/build ./public/build
 
@@ -45,8 +48,7 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev --no-script
 EXPOSE 8000
 
 # Script to run migrations/seeding, discover packages, and start php artisan serve
-CMD php artisan key:generate --force && \
-    php artisan package:discover --ansi && \
+CMD php artisan package:discover --ansi && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
