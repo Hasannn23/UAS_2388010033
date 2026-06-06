@@ -44,12 +44,12 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-interaction --optimize-autoloader --no-dev --no-scripts --ignore-platform-reqs
 
-# Expose port 8000
-EXPOSE 8000
+# Expose port 3000
+EXPOSE 3000
 
 # Script to run migrations/seeding, discover packages, and start php artisan serve
 CMD php artisan package:discover --ansi && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
-    php artisan serve --host=0.0.0.0 --port=8000
+    php artisan serve --host=0.0.0.0 --port=3000

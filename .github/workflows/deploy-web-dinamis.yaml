@@ -112,3 +112,5 @@ jobs:
 
             echo "=== Container Status ===" | tee -a deploy.log
             sudo docker ps 2>&1 | tee -a deploy.log
+            echo "=== Dynamic Web Logs ===" | tee -a deploy.log
+            sudo docker logs uas-dinamis 2>&1 | tee -a deploy.log
