@@ -5,9 +5,10 @@
 @section('content')
 <div class="dashboard-header">
     <div class="dashboard-title">
-        <h2>DASBOR INVENTARIS</h2>
-        <p>Kelola koleksi denim, stok, harga, dan spesifikasi produk Anda secara real-time.</p>
+        <h2>@if(Auth::user()->email === 'admin@denim.com') DASBOR INVENTARIS @else KATALOG PENGGUNA @endif</h2>
+        <p>@if(Auth::user()->email === 'admin@denim.com') Kelola koleksi denim, stok, harga, dan spesifikasi produk Anda secara real-time. @else Telusuri koleksi denim premium kami, pilih ukuran, dan cek ketersediaan stok produk secara real-time. @endif</p>
     </div>
+    @if(Auth::user()->email === 'admin@denim.com')
     <div>
         <button class="btn-copper" id="btn-open-create-modal-body">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -17,18 +18,20 @@
             Tambah Produk
         </button>
     </div>
+    @endif
 </div>
 
 <!-- Stats Overview Grid -->
 <div class="stats-grid">
     <div class="stats-card">
         <div>
-            <div class="stats-label">Total Produk (SKU)</div>
+            <div class="stats-label">@if(Auth::user()->email === 'admin@denim.com') Total Produk (SKU) @else Total Koleksi @endif</div>
             <div class="stats-value">{{ $stats['total_products'] }}</div>
         </div>
-        <div class="stats-desc">Model terdaftar di sistem</div>
+        <div class="stats-desc">Model denim terdaftar</div>
     </div>
     
+    @if(Auth::user()->email === 'admin@denim.com')
     <div class="stats-card">
         <div>
             <div class="stats-label">Valuasi Stok</div>
@@ -38,7 +41,19 @@
         </div>
         <div class="stats-desc">Total modal inventaris aktif</div>
     </div>
+    @else
+    <div class="stats-card">
+        <div>
+            <div class="stats-label">Kualitas Wash</div>
+            <div class="stats-value" style="color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue-glow); font-size: 1.8rem; padding: 0.2rem 0;">
+                PREMIUM
+            </div>
+        </div>
+        <div class="stats-desc">100% Selvedge & Heavy Metal Distressed</div>
+    </div>
+    @endif
 
+    @if(Auth::user()->email === 'admin@denim.com')
     <div class="stats-card {{ $stats['low_stock_count'] > 0 ? 'alert-card' : '' }}">
         <div>
             <div class="stats-label">Stok Kritis</div>
@@ -48,10 +63,21 @@
         </div>
         <div class="stats-desc">{{ $stats['low_stock_count'] > 0 ? 'Segera lakukan restock!' : 'Semua stok aman' }}</div>
     </div>
+    @else
+    <div class="stats-card">
+        <div>
+            <div class="stats-label">Jaminan Ukuran</div>
+            <div class="stats-value" style="color: var(--rivet-copper); text-shadow: 0 0 8px rgba(255, 107, 53, 0.2); font-size: 1.8rem; padding: 0.2rem 0;">
+                LENGKAP
+            </div>
+        </div>
+        <div class="stats-desc">Tersedia dari ukuran 28 s.d XL</div>
+    </div>
+    @endif
 
     <div class="stats-card">
         <div>
-            <div class="stats-label">Kategori Denim</div>
+            <div class="stats-label">@if(Auth::user()->email === 'admin@denim.com') Kategori Denim @else Ragam Fit @endif</div>
             <div class="stats-value" style="color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue-glow);">
                 {{ $stats['total_categories'] }}
             </div>
@@ -125,7 +151,9 @@
                     <th>Ukuran</th>
                     <th>Harga</th>
                     <th>Stok</th>
+                    @if(Auth::user()->email === 'admin@denim.com')
                     <th style="text-align: right;">Aksi</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -164,6 +192,7 @@
                                 <span class="badge badge-stock">{{ $product->stock }} Pcs</span>
                             @endif
                         </td>
+                        @if(Auth::user()->email === 'admin@denim.com')
                         <td style="text-align: right;">
                             <div class="action-buttons" style="justify-content: flex-end;">
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn-icon btn-edit" title="Ubah data">
@@ -187,6 +216,7 @@
                                 </form>
                             </div>
                         </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
@@ -194,6 +224,7 @@
     @endif
 </div>
 
+@if(Auth::user()->email === 'admin@denim.com')
 <!-- Modal Dialog for Creating Product -->
 <div class="modal-overlay" id="create-modal">
     <div class="modal-content">
@@ -267,9 +298,11 @@
         </form>
     </div>
 </div>
+@endif
 @endsection
 
 @section('scripts')
+@if(Auth::user()->email === 'admin@denim.com')
 <script>
     // Elements
     const createModal = document.getElementById('create-modal');
@@ -312,4 +345,5 @@
         }
     });
 </script>
+@endif
 @endsection

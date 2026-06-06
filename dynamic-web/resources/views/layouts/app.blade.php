@@ -37,6 +37,7 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                @if(Auth::user()->email === 'admin@denim.com')
                 <li>
                     <a href="#" class="sidebar-link" id="btn-open-create-modal">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -46,6 +47,7 @@
                         <span>Tambah Denim</span>
                     </a>
                 </li>
+                @endif
             </ul>
             
             <div class="sidebar-user">
