@@ -37,9 +37,9 @@ COPY --from=frontend-builder /app/public/build ./public/build
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Install composer dependencies (using --no-scripts to prevent execution of artisan commands during build)
+# Install composer dependencies (using --no-scripts to prevent execution of artisan commands during build, and --ignore-platform-reqs for alpine compatibility)
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install --no-interaction --optimize-autoloader --no-dev --no-scripts
+RUN composer install --no-interaction --optimize-autoloader --no-dev --no-scripts --ignore-platform-reqs
 
 # Expose port 8000
 EXPOSE 8000
