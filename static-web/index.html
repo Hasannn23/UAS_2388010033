@@ -3,215 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV Modern - Mahasiswa Informatika</title>
+    <title>Dika Hasan Nugroho | Portfolio</title>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI', sans-serif;
         }
 
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+        body{
+            background:#f5f7fa;
+            color:#333;
         }
 
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            background: #fff;
-            width: 100%;
-            max-width: 900px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            overflow: hidden;
+        header{
+            background:linear-gradient(135deg,#0f172a,#2563eb);
+            color:white;
+            padding:80px 10%;
         }
 
-        /* Bagian Kiri - Warna Merah */
-        .left-sidebar {
-            flex: 1;
-            min-width: 250px;
-            background: linear-gradient(135deg, #d90429 0%, #ef233c 100%);
-            color: #fff;
-            padding: 40px 20px;
-            text-align: center;
+        .hero{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:30px;
         }
 
-        /* Tempat Foto */
-        .profile-photo {
-            width: 160px;
-            height: 160px;
-            background-color: #fff;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            border: 4px solid #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8d99ae;
-            font-weight: 600;
-            font-size: 0.9em;
-            overflow: hidden;
-            position: relative;
+        .hero-text{
+            flex:1;
         }
 
-        .profile-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none; /* Ubah ke block jika foto sudah ada */
+        .hero-text h1{
+            font-size:48px;
+            margin-bottom:10px;
         }
 
-        .left-sidebar h1 {
-            font-size: 1.6em;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
+        .hero-text h3{
+            font-weight:400;
+            color:#dbeafe;
+            margin-bottom:20px;
         }
 
-        .left-sidebar h2 {
-            font-size: 1em;
-            font-weight: 400;
-            color: #ffb3b3;
-            margin-bottom: 30px;
+        .hero-text p{
+            max-width:600px;
+            line-height:1.8;
         }
 
-        .contact-info {
-            text-align: left;
-            margin-bottom: 20px;
-            font-size: 0.9em;
+        .hero-image{
+            width:280px;
+            height:280px;
+            border-radius:50%;
+            overflow:hidden;
+            border:5px solid white;
+            background:white;
         }
 
-        .contact-info p {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .hero-image img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
         }
 
-        /* Bagian Kanan - Putih */
-        .right-content {
-            flex: 2;
-            min-width: 300px;
-            padding: 40px;
+        section{
+            padding:70px 10%;
         }
 
-        .section {
-            margin-bottom: 30px;
+        .section-title{
+            text-align:center;
+            margin-bottom:40px;
+            color:#2563eb;
+            font-size:32px;
         }
 
-        .section-title {
-            color: #d90429;
-            font-size: 1.3em;
-            font-weight: 700;
-            border-bottom: 2px solid #ffb3b3;
-            display: inline-block;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .card{
+            background:white;
+            padding:25px;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom:20px;
         }
 
-        .item {
-            margin-bottom: 20px;
+        .skills{
+            display:flex;
+            flex-wrap:wrap;
+            gap:15px;
+            justify-content:center;
         }
 
-        .item h3 {
-            font-size: 1.1em;
-            color: #2b2d42;
+        .skill{
+            background:#2563eb;
+            color:white;
+            padding:10px 20px;
+            border-radius:30px;
         }
 
-        .item p {
-            font-size: 0.95em;
-            color: #6c757d;
-            margin-top: 5px;
+        .project-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:20px;
         }
 
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+        .project{
+            background:white;
+            padding:20px;
+            border-radius:15px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.08);
         }
 
-        .skill-badge {
-            background-color: #ffe5e5;
-            color: #d90429;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            border: 1px solid #ffb3b3;
+        .project h3{
+            color:#2563eb;
+            margin-bottom:10px;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                flex-direction: column;
+        footer{
+            background:#0f172a;
+            color:white;
+            text-align:center;
+            padding:30px;
+        }
+
+        .contact{
+            text-align:center;
+            line-height:2;
+        }
+
+        @media(max-width:768px){
+            .hero{
+                flex-direction:column-reverse;
+                text-align:center;
+            }
+
+            .hero-text h1{
+                font-size:36px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="left-sidebar">
-            
-            <div class="profile-photo">
-                <span id="photo-placeholder">Pas Foto<br>Di Sini</span>
-                </div>
-            
-            <h1>Nama Lengkap</h1>
-            <h2>Mahasiswa Teknik Informatika</h2>
+<header>
+    <div class="hero">
 
-            <div class="contact-info">
-                <p>📧 email@student.ac.id</p>
-                <p>📱 +62 812-3456-7890</p>
-                <p>📍 Cirebon, Jawa Barat</p>
-                <p>🌐 github.com/username-kamu</p>
-            </div>
+        <div class="hero-text">
+            <h1>Dika Hasan Nugroho</h1>
+            <h3>Mahasiswa Informatika | Web Developer | IoT Enthusiast</h3>
+
+            <p>
+                Halo! Saya Dika Hasan Nugroho, mahasiswa Program Studi Informatika
+                UIN Siber Syekh Nurjati Cirebon. Saya memiliki minat pada
+                pengembangan web, Internet of Things (IoT), keamanan siber,
+                dan teknologi berbasis Artificial Intelligence.
+            </p>
         </div>
 
-        <div class="right-content">
-            <div class="section">
-                <h2 class="section-title">Profil Singkat</h2>
-                <p>Mahasiswa Teknik Informatika yang antusias dengan pengembangan perangkat lunak dan infrastruktur modern. Memiliki ketertarikan khusus pada teknologi Cloud Native, otomatisasi CI/CD, dan orkestrasi container. Berkomitmen untuk terus belajar dan mengimplementasikan solusi yang efisien dan aman.</p>
-            </div>
-
-            <div class="section">
-                <h2 class="section-title">Pendidikan</h2>
-                <div class="item">
-                    <h3>Universitas Kamu</h3>
-                    <p>S1 Teknik Informatika | 2023 - Sekarang</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2 class="section-title">Keahlian IT</h2>
-                <div class="skills">
-                    <span class="skill-badge">Docker & Docker Compose</span>
-                    <span class="skill-badge">GitHub Actions (CI/CD)</span>
-                    <span class="skill-badge">Linux Server & AWS</span>
-                    <span class="skill-badge">Next.js & React</span>
-                    <span class="skill-badge">Nginx Reverse Proxy</span>
-                    <span class="skill-badge">MariaDB</span>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2 class="section-title">Proyek Akademik</h2>
-                <div class="item">
-                    <h3>Arsitektur Microservices Cloud Native</h3>
-                    <p>Membangun dan mendeploy arsitektur multi-aplikasi menggunakan Docker Compose. Mengonfigurasi reverse proxy Nginx untuk merutekan trafik statis dan dinamis, serta mengotomatisasi pipeline deployment ke AWS EC2 menggunakan GitHub Actions dengan metode Zero-Touch Deployment.</p>
-                </div>
-            </div>
+        <div class="hero-image">
+            <!-- GANTI FOTO SAYA.jpg DENGAN FOTO KAMU -->
+            <img src="foto-saya.jpg" alt="Foto Dika">
         </div>
+
     </div>
+</header>
+
+<section>
+    <h2 class="section-title">Tentang Saya</h2>
+
+    <div class="card">
+        <p>
+            Saya merupakan lulusan SMKN 1 Palasah dan saat ini menempuh pendidikan
+            di Program Studi Informatika UIN Siber Syekh Nurjati Cirebon.
+            Saya senang mempelajari teknologi baru dan mengembangkan berbagai
+            proyek yang berkaitan dengan website, IoT, jaringan komputer,
+            machine learning, serta keamanan siber.
+        </p>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">Pendidikan</h2>
+
+    <div class="card">
+        <h3>UIN Siber Syekh Nurjati Cirebon</h3>
+        <p>S1 Informatika</p>
+        <p>Semester 6</p>
+    </div>
+
+    <div class="card">
+        <h3>SMKN 1 Palasah</h3>
+        <p>Sekolah Menengah Kejuruan</p>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">Keahlian</h2>
+
+    <div class="skills">
+        <div class="skill">HTML</div>
+        <div class="skill">CSS</div>
+        <div class="skill">JavaScript</div>
+        <div class="skill">PHP</div>
+        <div class="skill">MySQL</div>
+        <div class="skill">Python</div>
+        <div class="skill">IoT</div>
+        <div class="skill">Cisco Packet Tracer</div>
+        <div class="skill">Cyber Security</div>
+        <div class="skill">Machine Learning</div>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">Proyek</h2>
+
+    <div class="project-grid">
+
+        <div class="project">
+            <h3>Tempat Sampah Pintar IoT</h3>
+            <p>
+                Sistem tempat sampah otomatis menggunakan ESP8266,
+                sensor ultrasonik, OLED, buzzer, dan notifikasi Telegram.
+            </p>
+        </div>
+
+        <div class="project">
+            <h3>Voting Machine MQTT</h3>
+            <p>
+                Sistem voting sederhana berbasis MQTT menggunakan broker Mosquitto.
+            </p>
+        </div>
+
+        <div class="project">
+            <h3>Sistem Manajemen Data Mahasiswa</h3>
+            <p>
+                Aplikasi CRUD berbasis PHP, Bootstrap, dan MySQL.
+            </p>
+        </div>
+
+        <div class="project">
+            <h3>Prediksi Harga Saham dengan LSTM</h3>
+            <p>
+                Analisis time series dan prediksi harga saham menggunakan Python
+                dan model Deep Learning LSTM.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">Kontak</h2>
+
+    <div class="card contact">
+        <p>📧 Email : emailkamu@example.com</p>
+        <p>📱 WhatsApp : 08xxxxxxxxxx</p>
+        <p>📷 Instagram : @usernamekamu</p>
+        <p>💻 GitHub : github.com/usernamekamu</p>
+        <p>🔗 LinkedIn : linkedin.com/in/usernamekamu</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Dika Hasan Nugroho | Portfolio Website</p>
+</footer>
 
 </body>
 </html>
