@@ -3,89 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curriculum Vitae - UAS Cloud Computing</title>
+    <title>CV Modern - Mahasiswa Informatika</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f7f6;
-        }
-        header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #3498db;
-            margin-bottom: 20px;
-        }
-        h1 {
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            color: #2c3e50;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
         }
-        .subtitle {
-            font-size: 1.2em;
-            color: #7f8c8d;
-        }
-        section {
-            background: #fff;
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
             padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        h2 {
-            color: #3498db;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        ul {
-            list-style-type: square;
-            padding-left: 20px;
-        }
-        .contact-info {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            background: #fff;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        /* Bagian Kiri - Warna Merah */
+        .left-sidebar {
+            flex: 1;
+            min-width: 250px;
+            background: linear-gradient(135deg, #d90429 0%, #ef233c 100%);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* Tempat Foto */
+        .profile-photo {
+            width: 160px;
+            height: 160px;
+            background-color: #fff;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8d99ae;
+            font-weight: 600;
+            font-size: 0.9em;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none; /* Ubah ke block jika foto sudah ada */
+        }
+
+        .left-sidebar h1 {
+            font-size: 1.6em;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .left-sidebar h2 {
+            font-size: 1em;
+            font-weight: 400;
+            color: #ffb3b3;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .contact-info p {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Bagian Kanan - Putih */
+        .right-content {
+            flex: 2;
+            min-width: 300px;
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #d90429;
+            font-size: 1.3em;
+            font-weight: 700;
+            border-bottom: 2px solid #ffb3b3;
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .item {
+            margin-bottom: 20px;
+        }
+
+        .item h3 {
+            font-size: 1.1em;
+            color: #2b2d42;
+        }
+
+        .item p {
+            font-size: 0.95em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-badge {
+            background-color: #ffe5e5;
+            color: #d90429;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            border: 1px solid #ffb3b3;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Nama Kamu</h1>
-        <div class="subtitle">Mahasiswa IT & Cloud Enthusiast</div>
-        <div class="contact-info">
-            <span>📧 email@student.ac.id</span> | 
-            <span>📱 +62 812-3456-7890</span> |
-            <span>📍 Kota Kamu</span>
+    <div class="container">
+        <div class="left-sidebar">
+            
+            <div class="profile-photo">
+                <span id="photo-placeholder">Pas Foto<br>Di Sini</span>
+                </div>
+            
+            <h1>Nama Lengkap</h1>
+            <h2>Mahasiswa Teknik Informatika</h2>
+
+            <div class="contact-info">
+                <p>📧 email@student.ac.id</p>
+                <p>📱 +62 812-3456-7890</p>
+                <p>📍 Cirebon, Jawa Barat</p>
+                <p>🌐 github.com/username-kamu</p>
+            </div>
         </div>
-    </header>
 
-    <section>
-        <h2>Tentang Saya</h2>
-        <p>Saya adalah mahasiswa yang memiliki minat besar dalam pengembangan web dan infrastruktur cloud. Saat ini sedang menyelesaikan proyek Ujian Akhir Semester untuk membangun arsitektur CI/CD menggunakan GitHub Actions dan Docker.</p>
-    </section>
+        <div class="right-content">
+            <div class="section">
+                <h2 class="section-title">Profil Singkat</h2>
+                <p>Mahasiswa Teknik Informatika yang antusias dengan pengembangan perangkat lunak dan infrastruktur modern. Memiliki ketertarikan khusus pada teknologi Cloud Native, otomatisasi CI/CD, dan orkestrasi container. Berkomitmen untuk terus belajar dan mengimplementasikan solusi yang efisien dan aman.</p>
+            </div>
 
-    <section>
-        <h2>Pendidikan</h2>
-        <ul>
-            <li><strong>Universitas Kamu</strong> - Jurusan Teknik Informatika (202x - Sekarang)</li>
-            <li><strong>SMA/SMK Kamu</strong> - Jurusan (Tahun Lulus)</li>
-        </ul>
-    </section>
+            <div class="section">
+                <h2 class="section-title">Pendidikan</h2>
+                <div class="item">
+                    <h3>Universitas Kamu</h3>
+                    <p>S1 Teknik Informatika | 202x - Sekarang</p>
+                </div>
+            </div>
 
-    <section>
-        <h2>Keahlian Teknis</h2>
-        <ul>
-            <li>Pengembangan Web (HTML, CSS, Next.js)</li>
-            <li>Administrasi Server & Cloud Computing (AWS)</li>
-            <li>Orkestrasi Container (Docker, Docker Compose)</li>
-            <li>Otomatisasi CI/CD (GitHub Actions)</li>
-        </ul>
-    </section>
+            <div class="section">
+                <h2 class="section-title">Keahlian IT</h2>
+                <div class="skills">
+                    <span class="skill-badge">Docker & Docker Compose</span>
+                    <span class="skill-badge">GitHub Actions (CI/CD)</span>
+                    <span class="skill-badge">Linux Server & AWS</span>
+                    <span class="skill-badge">Next.js & React</span>
+                    <span class="skill-badge">Nginx Reverse Proxy</span>
+                    <span class="skill-badge">MariaDB</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Proyek Akademik</h2>
+                <div class="item">
+                    <h3>Arsitektur Microservices Cloud Native</h3>
+                    <p>Membangun dan mendeploy arsitektur multi-aplikasi menggunakan Docker Compose. Mengonfigurasi reverse proxy Nginx untuk merutekan trafik statis dan dinamis, serta mengotomatisasi pipeline deployment ke AWS EC2 menggunakan GitHub Actions dengan metode Zero-Touch Deployment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
