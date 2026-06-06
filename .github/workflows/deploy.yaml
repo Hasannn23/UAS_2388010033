@@ -42,16 +42,15 @@ jobs:
         key: ${{ secrets.AWS_PRIVATE_KEY }}
         port: 22
         script: |
-          # Find the repository root by looking for 'static-web' directory which always exists
-          STATIC_DIR=$(find /home/ubuntu -name "static-web" -type d 2>/dev/null | head -n 1)
+          # Locate repository or clone if it does not exist
+          STATIC_DIR=$(find ~ /var/www /home -name "static-web" -type d 2>/dev/null | head -n 1)
           if [ -z "$STATIC_DIR" ]; then
-            STATIC_DIR=$(find /home -name "static-web" -type d 2>/dev/null | head -n 1)
+            echo "Repository not found. Cloning to ~/UAS_2388010033..."
+            git clone https://github.com/Hasannn23/UAS_2388010033.git ~/UAS_2388010033
+            REPO_DIR="$HOME/UAS_2388010033"
+          else
+            REPO_DIR=$(dirname "$STATIC_DIR")
           fi
-          if [ -z "$STATIC_DIR" ]; then
-            echo "Error: static-web directory not found"
-            exit 1
-          fi
-          REPO_DIR=$(dirname "$STATIC_DIR")
           cd "$REPO_DIR"
           echo "Deploying Static Web in directory: $(pwd)"
 
