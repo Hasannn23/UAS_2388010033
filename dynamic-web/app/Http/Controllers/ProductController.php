@@ -71,26 +71,10 @@ class ProductController extends Controller
             'size' => 'required|string|max:255',
             'wash_type' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'image_url' => 'nullable|url|max:2048'
         ]);
 
-        $productData = $request->except('image');
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            
-            // Create uploads directory if not exists
-            $destinationPath = public_path('uploads/products');
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-            
-            $image->move($destinationPath, $imageName);
-            $productData['image_url'] = 'uploads/products/' . $imageName;
-        }
-
-        Product::create($productData);
+        Product::create($validated);
 
         return redirect()->route('dashboard')
             ->with('success', 'Produk denim "' . $request->name . '" berhasil ditambahkan ke inventaris!');
@@ -117,30 +101,10 @@ class ProductController extends Controller
             'size' => 'required|string|max:255',
             'wash_type' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'image_url' => 'nullable|url|max:2048'
         ]);
 
-        $productData = $request->except('image');
-
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image_url && File::exists(public_path($product->image_url))) {
-                File::delete(public_path($product->image_url));
-            }
-
-            $image = $request->file('image');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            
-            $destinationPath = public_path('uploads/products');
-            if (!File::exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-            
-            $image->move($destinationPath, $imageName);
-            $productData['image_url'] = 'uploads/products/' . $imageName;
-        }
-
-        $product->update($productData);
+        $product->update($validated);
 
         return redirect()->route('dashboard')
             ->with('success', 'Produk denim "' . $product->name . '" berhasil diperbarui!');
@@ -152,11 +116,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $productName = $product->name;
-
-        // Delete image if exists
-        if ($product->image_url && File::exists(public_path($product->image_url))) {
-            File::delete(public_path($product->image_url));
-        }
 
         $product->delete();
 

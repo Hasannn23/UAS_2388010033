@@ -158,7 +158,7 @@
             <div class="catalog-card">
                 <div class="catalog-image-container">
                     @if($product->image_url)
-                        <img src="{{ asset($product->image_url) }}" alt="{{ $product->name }}" class="catalog-image">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="catalog-image">
                     @else
                         <div class="catalog-image-placeholder">
                             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -232,7 +232,7 @@
             </h3>
             <span class="alert-close" id="btn-close-create-modal" style="font-size: 1.5rem;">&times;</span>
         </div>
-        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('products.store') }}" method="POST">
             @csrf
             <div class="modal-body">
                 <div class="form-group">
@@ -275,8 +275,8 @@
                         <input type="text" name="size" id="size_input" class="form-input" placeholder="Contoh: 28, 30, 32 atau S, M, L" required>
                     </div>
                     <div class="form-group">
-                        <label for="image" class="form-label">Foto Pakaian (Opsional)</label>
-                        <input type="file" name="image" id="image_input" class="form-input" accept="image/*">
+                        <label for="image_url" class="form-label">URL Foto Pakaian (Dari Google/Lainnya)</label>
+                        <input type="url" name="image_url" id="image_url_input" class="form-input" placeholder="https://contoh.com/gambar.jpg">
                     </div>
                 </div>
 

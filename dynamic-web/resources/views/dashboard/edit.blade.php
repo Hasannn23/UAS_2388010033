@@ -25,7 +25,7 @@
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">Harap isi kolom bertanda bintang (*) dengan data yang valid.</p>
     </div>
 
-    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('products.update', $product->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -89,9 +89,9 @@
             </div>
             
             <div class="form-group">
-                <label for="image" class="form-label">Ganti Foto Pakaian</label>
-                <input type="file" name="image" id="image" class="form-input" accept="image/*">
-                @error('image')
+                <label for="image_url" class="form-label">URL Foto Pakaian (Dari Google/Lainnya)</label>
+                <input type="url" name="image_url" id="image_url" class="form-input" value="{{ old('image_url', $product->image_url) }}" placeholder="https://contoh.com/gambar.jpg">
+                @error('image_url')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
@@ -101,10 +101,10 @@
             <div class="form-group" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px dashed var(--metal-border); display: flex; align-items: center; gap: 1.5rem; margin-top: -0.5rem;">
                 <div>
                     <span class="form-label" style="margin-bottom: 0.5rem;">Foto Produk Saat Ini:</span>
-                    <img src="{{ asset($product->image_url) }}" alt="{{ $product->name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--metal-border);">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--metal-border);">
                 </div>
                 <div style="font-size: 0.85rem; color: var(--text-muted);">
-                    Gambar di atas sedang digunakan. Mengunggah file baru akan menggantikan gambar ini secara otomatis.
+                    Gambar di atas sedang digunakan. Memasukkan URL baru akan menggantikan gambar ini secara otomatis.
                 </div>
             </div>
         @endif
