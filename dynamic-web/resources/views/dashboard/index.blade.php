@@ -8,8 +8,19 @@
         <h2>@if(Auth::user()?->email === 'admin@denim.com') DASBOR INVENTARIS @else KATALOG PENGGUNA @endif</h2>
         <p>@if(Auth::user()?->email === 'admin@denim.com') Kelola koleksi denim, stok, harga, dan spesifikasi produk Anda secara real-time. @else Telusuri koleksi denim premium kami, pilih ukuran, dan cek ketersediaan stok produk secara real-time. @endif</p>
     </div>
-    @if(Auth::user()?->email === 'admin@denim.com')
-    <div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        @if(!Auth::check())
+            <a href="{{ route('login') }}" class="btn-neon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                Masuk / Login
+            </a>
+        @endif
+        
+        @if(Auth::user()?->email === 'admin@denim.com')
         <button class="btn-copper" id="btn-open-create-modal-body">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -17,8 +28,8 @@
             </svg>
             Tambah Produk
         </button>
+        @endif
     </div>
-    @endif
 </div>
 
 <!-- Stats Overview Grid -->
@@ -131,10 +142,10 @@
     </div>
 </form>
 
-<!-- Table showing Jeans products -->
-<div class="table-container">
+<!-- Catalog Grid View -->
+<div class="catalog-grid">
     @if($products->isEmpty())
-        <div style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
+        <div style="grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; color: var(--text-muted); background: var(--panel-dark); border: 2px solid var(--metal-border); border-radius: 10px;">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 1rem; opacity: 0.5;">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="8" y1="12" x2="16" y2="12"></line>
@@ -143,84 +154,67 @@
             <p style="margin-top: 0.5rem; font-size: 0.9rem;">Coba ganti filter atau tambahkan produk baru.</p>
         </div>
     @else
-        <table class="metal-table">
-            <thead>
-                <tr>
-                    <th>Detail Produk</th>
-                    <th>Kategori</th>
-                    <th>Ukuran</th>
-                    <th>Harga</th>
-                    <th>Stok</th>
-                    @if(Auth::user()?->email === 'admin@denim.com')
-                    <th style="text-align: right;">Aksi</th>
+        @foreach($products as $product)
+            <div class="catalog-card">
+                <div class="catalog-image-container">
+                    @if($product->image_url)
+                        <img src="{{ asset($product->image_url) }}" alt="{{ $product->name }}" class="catalog-image">
+                    @else
+                        <div class="catalog-image-placeholder">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M20.38 3.46L16 17H8L3.62 3.46a1 1 0 0 1 .95-1.31h14.86a1 1 0 0 1 .95 1.31z"></path>
+                            </svg>
+                        </div>
                     @endif
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($products as $product)
-                    <tr>
-                        <td>
-                            <div class="product-cell">
-                                @if($product->image_url)
-                                    <img src="{{ asset($product->image_url) }}" alt="{{ $product->name }}" class="product-img">
-                                @else
-                                    <div class="product-img-placeholder">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M20.38 3.46L16 17H8L3.62 3.46a1 1 0 0 1 .95-1.31h14.86a1 1 0 0 1 .95 1.31z"></path>
-                                        </svg>
-                                    </div>
-                                @endif
-                                <div class="product-name-info">
-                                    <span class="product-name">{{ $product->name }}</span>
-                                    <span class="product-wash">{{ $product->wash_type ?? 'Standard Wash' }}</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge badge-denim">{{ $product->category }}</span>
-                        </td>
-                        <td>
-                            <span style="font-family: var(--font-heading); font-size: 0.9rem;">{{ $product->size }}</span>
-                        </td>
-                        <td>
-                            <span style="font-weight: 600; color: #fff;">{{ $product->formatted_price }}</span>
-                        </td>
-                        <td>
-                            @if($product->isLowStock(5))
-                                <span class="badge badge-low-stock">{{ $product->stock }} (Tinggal Dikit)</span>
-                            @else
-                                <span class="badge badge-stock">{{ $product->stock }} Pcs</span>
-                            @endif
-                        </td>
-                        @if(Auth::user()?->email === 'admin@denim.com')
-                        <td style="text-align: right;">
-                            <div class="action-buttons" style="justify-content: flex-end;">
-                                <a href="{{ route('products.edit', $product->id) }}" class="btn-icon btn-edit" title="Ubah data">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 20h9"></path>
-                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                                    </svg>
-                                </a>
-                                
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus denim &quot;{{ $product->name }}&quot; dari sistem?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-icon btn-delete" title="Hapus produk">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+                    <div class="catalog-badges">
+                        <span class="badge badge-denim">{{ $product->category }}</span>
+                        @if($product->isLowStock(5))
+                            <span class="badge badge-low-stock">Stok Menipis</span>
                         @endif
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    </div>
+                </div>
+                
+                <div class="catalog-details">
+                    <h3 class="catalog-title">{{ $product->name }}</h3>
+                    <p class="catalog-wash">{{ $product->wash_type ?? 'Standard Wash' }}</p>
+                    <div class="catalog-price">{{ $product->formatted_price }}</div>
+                    
+                    <div class="catalog-meta">
+                        <div>
+                            <span class="meta-label">Ukuran</span>
+                            <span class="meta-value">{{ $product->size }}</span>
+                        </div>
+                        <div>
+                            <span class="meta-label">Stok</span>
+                            <span class="meta-value">{{ $product->stock }} Pcs</span>
+                        </div>
+                    </div>
+                    
+                    @if(Auth::user()?->email === 'admin@denim.com')
+                    <div class="catalog-actions">
+                        <a href="{{ route('products.edit', $product->id) }}" class="btn-metal" style="flex: 1;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                            </svg>
+                            Edit
+                        </a>
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="flex: 1; display: flex;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus denim &quot;{{ $product->name }}&quot; dari sistem?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-danger-metal" style="width: 100%;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                                Hapus
+                            </button>
+                        </form>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        @endforeach
     @endif
 </div>
 

@@ -922,3 +922,123 @@ textarea.form-input {
         flex-grow: 1;
     }
 }
+
+/* Catalog Grid View */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.catalog-card {
+    background: linear-gradient(145deg, var(--panel-dark) 0%, rgba(26,29,36,0.6) 100%);
+    border: 2px solid var(--metal-border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.catalog-card:hover {
+    border-color: var(--neon-blue);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 210, 255, 0.15);
+}
+
+.catalog-image-container {
+    width: 100%;
+    height: 250px;
+    position: relative;
+    background: rgba(0,0,0,0.5);
+    border-bottom: 2px solid var(--metal-border);
+}
+
+.catalog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.catalog-card:hover .catalog-image {
+    transform: scale(1.05);
+}
+
+.catalog-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.catalog-badges {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.catalog-details {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.catalog-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: #fff;
+    font-family: var(--font-heading);
+}
+
+.catalog-wash {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.catalog-price {
+    font-size: 1.4rem;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    color: var(--rivet-copper);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(255, 107, 53, 0.2);
+}
+
+.catalog-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--metal-border);
+}
+
+.meta-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.meta-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.catalog-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+}
