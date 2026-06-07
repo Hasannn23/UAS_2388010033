@@ -78,7 +78,7 @@
       php artisan view:cache && \
       php artisan serve --host=0.0.0.0 --port=3000
 
-# ORKESTRASI DOCKER COMPOSE &amp; JARINGAN
+# ORKESTRASI DOCKER COMPOSE & JARINGAN
    Penulisan sintaks YAML pada docker-compose.yml memuat pengaturan pemetaan port, volume persisten, dan variabel lingkungan (Environment Variables) agar password tidak ter-ekspos (hardcoded).
    ![alt text](image-5.png)
 
