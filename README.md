@@ -1,99 +1,94 @@
-# 🏛️ UAS - Sistem Deployment CI/CD & Orkestrasi Kontainer
+# Inisiasi Instance Baru
 
-Proyek ini merupakan implementasi sistem CI/CD dan orkestrasi kontainer Docker Compose untuk menyajikan dua aplikasi web: **Web Statis** (Web Portfolio & Nginx Reverse Proxy) dan **Web Dinamis** (Aplikasi Manajemen Denim berbasis Laravel) dengan basis data **MariaDB**.
+   1. buat instance di aws dengan Nama Instance: UAS-2388010033
+   ![alt text](image-4.png)
+   2. OS Image: Ubuntu Server 22.04 LTS
+   3. Key Pair: Menggunakan key .pem baru yang disimpan secara aman untuk akses SSH GitHub Actions. 
+   ![alt text](image.png)
+   4. membuat repo di docker untuk dinamis dan statis 
+   ![alt text](image-2.png)
+   ![alt text](image-3.png)
 
----
+# Konfigurasi Security Group (Firewall)
+   Untuk memastikan lalu lintas jaringan dapat diakses publik namun tetap aman, Security
+   Group (Inbound Rules) telah dikonfigurasi sebagai berikut:
+   1. Port 22 (SSH): Diizinkan agar GitHub Actions dapat masuk ke server untuk mengeksekusi script deployment.
+   2. Port 80 (HTTP): Dibuka secara publik (0.0.0.0/0) agar web dapat diakses oleh browser.
+   ![alt text](image-1.png)
 
-## 🗺️ Topologi Arsitektur Sistem
+# Konfigurasi Kontainer Laravel (Web Dinamis)
 
-Sistem ini di-deploy menggunakan topologi reverse proxy di dalam jaringan Docker internal AWS EC2 untuk memastikan isolasi data dan keamanan sistem.
+   Aplikasi dinamis dibangun menggunakan PHP dan framework Laravel. Dockerfile dirancang menggunakan base image php:8.2-fpm dengan instalasi Composer di dalamnya.
 
-```mermaid
-graph TD
-    subgraph Client ["Client Browser"]
-        ClientUser["User Requests"]
-    end
+   Berikut adalah Dockerfile yang digunakan untuk Laravel:
 
-    subgraph AWS ["AWS EC2 Instance (Port 80)"]
-        subgraph Docker ["Docker Compose Network (uas_network)"]
-            Proxy["nginx:alpine (static-web)<br>Port: 80 (Public)"]
-            Laravel["php:8.3-cli-alpine (dynamic-web)<br>Port: 8000 (Internal)"]
-            DB["mariadb:10.6 (db-webdinamis)<br>Port: 3306 (Internal)"]
-        end
-    end
+   1. Stage 1: Build frontend assets
+   FROM node:20-alpine AS frontend-builder
+   WORKDIR /app
+   COPY package.json package-lock.json* ./
+   RUN npm install
+   COPY . .
+   RUN npm run build
 
-    ClientUser -->|HTTP Request| Proxy
-    Proxy -->|Serve static-web| StaticFiles["index.html (Portfolio Website)"]
-    Proxy -->|Reverse Proxy requests| Laravel
-    Laravel -->|Database Connection| DB
-```
+   # Stage 2: Run the Laravel application
+   FROM php:8.4-cli-alpine
+   WORKDIR /var/www/html
 
----
+   # Install system dependencies & PHP extensions
+   RUN apk add --no-cache \
+      mysql-client \
+      libpng-dev \
+      libjpeg-turbo-dev \
+      freetype-dev \
+      zip \
+      libzip-dev \
+      unzip \
+      git \
+      oniguruma-dev \
+      bash \
+      && docker-php-ext-configure gd --with-freetype --with-jpeg \
+      && docker-php-ext-install pdo_mysql gd zip mbstring bcmath
 
-## ⚙️ Penjelasan Environment & Layanan
+   # Install Composer
+   COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-Layanan docker-compose dikonfigurasikan dengan standardisasi produksi dan didefinisikan ke dalam 3 container utama:
+   # Copy application files
+   COPY . .
 
-| Nama Layanan | Nama Container | Image Docker | Port Publik | Port Internal | Deskripsi |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `static-web` | `uas-statis` | `nginx:alpine` | `80` | `80` | Menyajikan Web Statis Portfolio sekaligus bertindak sebagai **Reverse Proxy** untuk meneruskan request dinamis ke container Laravel. |
-| `dynamic-web` | `uas-dinamis` | `php:8.3-cli-alpine` | *None* | `8000` | Aplikasi manajemen denim berbasis Laravel yang terisolasi dari akses publik langsung. |
-| `db-webdinamis` | `db-webdinamis` | `mariadb:10.6` | *None* | `3306` | Basis data MariaDB yang menyimpan data pengguna dan inventaris denim secara persisten. |
+   # Copy environment file
+   RUN cp .env.example .env
 
----
+   # Copy Vite built assets from Stage 1
+   COPY --from=frontend-builder /app/public/build ./public/build
 
-## 🔒 Fitur Keamanan & Desain Jaringan
+   # Set permissions
+   RUN chown -R www-data:www-data storage bootstrap/cache
 
-1. **Zero Public Port exposure for Database & App**: Port database `3306` dan port Laravel `8000` **TIDAK** diekspos ke publik. Hanya port `80` milik Nginx yang terbuka secara eksternal.
-2. **Docker Network Isolation**: Semua container berjalan di dalam `uas_network` sehingga komunikasi antar-layanan menggunakan DNS internal (contoh: Laravel menghubungi database menggunakan host name `db-webdinamis` bukan IP hardcoded).
-3. **Kredensial Aman**: Rahasia database dilindungi menggunakan Environment Variables yang diinjeksikan langsung melalui Docker Compose.
+   # Install composer dependencies (using --no-scripts to prevent execution of artisan commands during build, and --ignore-platform-reqs for alpine compatibility)
+   ENV COMPOSER_ALLOW_SUPERUSER=1
+   RUN composer install --no-interaction --optimize-autoloader --no-dev --no-scripts --ignore-platform-reqs
 
----
+   # Expose port 3000
+   EXPOSE 3000
 
-## 🚀 Otomasi Basis Data (Auto-Seeding)
+   # Script to run migrations/seeding, discover packages, and start php artisan serve
+   CMD php artisan package:discover --ansi && \
+      php artisan config:cache && \
+      php artisan route:cache && \
+      php artisan view:cache && \
+      php artisan serve --host=0.0.0.0 --port=3000
 
-Saat container database pertama kali dinyalakan, skema basis data dan data benih (seed data) akan di-import secara otomatis dari berkas SQL lokal ke MariaDB melalui direktori inisialisasi:
-- Berkas SQL lokal: `db_data/uas33.sql`
-- Target Container: `/docker-entrypoint-initdb.d/`
+# ORKESTRASI DOCKER COMPOSE &amp; JARINGAN
+   Penulisan sintaks YAML pada docker-compose.yml memuat pengaturan pemetaan port, volume persisten, dan variabel lingkungan (Environment Variables) agar password tidak ter-ekspos (hardcoded).
+   ![alt text](image-5.png)
 
-Berkas SQL tersebut mencakup skema tabel `users`, `products`, `password_reset_tokens`, `sessions`, dan data benih pengguna admin default:
-- **Email Admin:** `admin@denim.com`
-- **Kata Sandi:** `admin123`
+# HASIL UJI COBA LANGSUNG & ZERO-TOUCH DEPLOYMENT
+   commit ke github action
+   ![alt text](image-6.png)
+   ![alt text](image-7.png)
 
----
+# Tampilan web statis
+   ![alt text](image-8.png)
+# Tampilan web statis
+   ![alt text](image-9.png)
 
-## 🛠️ Pipeline CI/CD (GitHub Actions)
-
-Kami memisahkan proses pipeline menjadi dua berkas workflow YAML independen menggunakan teknik **Paths Filter** untuk menghindari pemborosan resource runner GitHub:
-
-1. **Web Statis Pipeline (`deploy.yaml`)**:
-   - Berjalan hanya jika ada perubahan di direktori `static-web/` atau berkas workflow itu sendiri.
-   - Melakukan build & push image `uas-statis` ke Docker Hub, melakukan SSH ke EC2, melakukan penarikan git terbaru, dan me-restart container `uas-statis`.
-2. **Web Dinamis Pipeline (`deploy-web-dinamis.yaml`)**:
-   - Berjalan hanya jika ada perubahan di direktori `dynamic-web/`, berkas `docker-compose.yml`, atau berkas workflow itu sendiri.
-   - Melakukan build & push image `uas-dinamis` ke Docker Hub, melakukan SSH ke EC2, melakukan penarikan git terbaru, me-restart seluruh layanan, menunggu database siap, dan melakukan verifikasi struktur tabel database.
-
----
-
-## 🌐 Tautan AWS & Dokumentasi Keberhasilan
-
-- **IP Publik AWS EC2:** `http://<MASUKKAN_IP_AWS_DI_SINI>`
-- **Log Deployment Berhasil (GitHub Actions):**
-  Status build dan push ke Docker Hub berjalan sukses dengan status centang hijau sempurna di GitHub Actions untuk kedua layanan.
-
----
-
-## 📖 Cara Menjalankan Secara Lokal
-
-1. Pastikan Anda telah menginstal **Docker** dan **Docker Compose**.
-2. Clone repositori ini dan masuk ke direktori utama.
-3. Jalankan perintah berikut untuk membangun dan memulai seluruh layanan:
-   ```bash
-   docker compose up --build -d
-   ```
-4. Buka browser dan akses:
-   - Web Statis Portfolio: `http://localhost/`
-   - Halaman Login (Laravel): `http://localhost/login`
-5. Masuk menggunakan akun admin:
-   - Email: `admin@denim.com`
-   - Password: `admin123`
