@@ -75,7 +75,7 @@ jobs:
             echo "Stopping conflicting raw containers..." | tee -a deploy.log
             sudo docker rm -f uas-statis uas-dinamis db-webdinamis || true
             echo "Starting docker compose..." | tee -a deploy.log
-            sudo DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} AWS_HOST=${{ secrets.AWS_HOST }} docker compose up -d --force-recreate 2>&1 | tee -a deploy.log
+            sudo DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} AWS_HOST=${{ secrets.AWS_HOST }} docker compose -f dynamic-web/docker-compose.yml up -d --force-recreate 2>&1 | tee -a deploy.log
 
             # Clean up old images
             sudo docker image prune -af 2>&1 | tee -a deploy.log
@@ -86,7 +86,7 @@ jobs:
 
             # Find database container ID using robust name search
             DB_CONTAINER=$(sudo docker ps -qf "name=db-webdinamis" | head -n 1)
-            SQL_FILE="db_data/uas33.sql"
+            SQL_FILE="dynamic-web/db_data/uas33.sql"
             echo "DB container ID: $DB_CONTAINER" | tee -a deploy.log
             echo "Looking for SQL file at: $(pwd)/$SQL_FILE" | tee -a deploy.log
 
