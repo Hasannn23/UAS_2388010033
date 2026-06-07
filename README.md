@@ -89,6 +89,6 @@
 
 # Tampilan web statis
    ![alt text](image-8.png)
-# Tampilan web statis
+# Tampilan web dinamis
    ![alt text](image-9.png)
 
