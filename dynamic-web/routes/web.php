@@ -11,6 +11,7 @@ Route::get('/', function () {
 
 // Public Routes
 Route::get('/dashboard', [ProductController::class, 'index'])->name('dashboard');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 // Authentication Guest Routes
 Route::middleware('guest')->group(function () {

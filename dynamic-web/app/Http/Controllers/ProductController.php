@@ -59,6 +59,14 @@ class ProductController extends Controller
     }
 
     /**
+     * Display the specified product.
+     */
+    public function show(Product $product)
+    {
+        return view('dashboard.show', compact('product'));
+    }
+
+    /**
      * Store a newly created product in database.
      */
     public function store(Request $request)

@@ -190,8 +190,18 @@
                         </div>
                     </div>
                     
-                    @if(Auth::user()?->email === 'admin@denim.com')
                     <div class="catalog-actions">
+                        <a href="{{ route('products.show', $product->id) }}" class="btn-neon" style="flex: 1; padding: 0.5rem; text-align: center; justify-content: center; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Detail
+                        </a>
+                    </div>
+                    
+                    @if(Auth::user()?->email === 'admin@denim.com')
+                    <div class="catalog-actions" style="margin-top: 0.5rem;">
                         <a href="{{ route('products.edit', $product->id) }}" class="btn-metal" style="flex: 1;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 20h9"></path>
