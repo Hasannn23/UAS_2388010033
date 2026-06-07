@@ -26,7 +26,7 @@ services:
       - "3000:3000"
     environment:
       APP_ENV: production
-      APP_DEBUG: 'false'
+      APP_DEBUG: 'true'
       APP_KEY: 'base64:a9Fgo08SdmnHq7cAbeLYI65VVA/vIvfgFgN6+gAMNME='
       DB_CONNECTION: mysql
       DB_HOST: db-webdinamis
