@@ -5,7 +5,7 @@
 @section('content')
 <div class="dashboard-header">
     <div class="dashboard-title">
-        <h2>@if(Auth::user()?->email === 'admin@denim.com') DASBOR INVENTARIS @else KATALOG @endif</h2>
+        <h2>@if(Auth::user()?->email === 'admin@denim.com') DASBOR INVENTARIS @else KATALOG PENGGUNA @endif</h2>
         <p>@if(Auth::user()?->email === 'admin@denim.com') Kelola koleksi denim, stok, harga, dan spesifikasi produk Anda secara real-time. @else Telusuri koleksi denim premium kami, pilih ukuran, dan cek ketersediaan stok produk secara real-time. @endif</p>
     </div>
     <div style="display: flex; gap: 1rem; align-items: center;">
