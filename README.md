@@ -16,6 +16,10 @@
    2. Port 80 (HTTP): Dibuka secara publik (0.0.0.0/0) agar web dapat diakses oleh browser.
    ![alt text](image-1.png)
 
+# Instal Docker Engine
+
+![alt text](image-10.png)
+
 # Konfigurasi Kontainer Laravel (Web Dinamis)
 
    Aplikasi dinamis dibangun menggunakan PHP dan framework Laravel. Dockerfile dirancang menggunakan base image php:8.2-fpm dengan instalasi Composer di dalamnya.
@@ -34,20 +38,6 @@
    FROM php:8.4-cli-alpine
    WORKDIR /var/www/html
 
-   # Install system dependencies & PHP extensions
-   RUN apk add --no-cache \
-      mysql-client \
-      libpng-dev \
-      libjpeg-turbo-dev \
-      freetype-dev \
-      zip \
-      libzip-dev \
-      unzip \
-      git \
-      oniguruma-dev \
-      bash \
-      && docker-php-ext-configure gd --with-freetype --with-jpeg \
-      && docker-php-ext-install pdo_mysql gd zip mbstring bcmath
 
    # Install Composer
    COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
