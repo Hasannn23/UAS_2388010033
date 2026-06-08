@@ -20,7 +20,7 @@
             
             <div class="form-group">
                 <label for="email" class="form-label">Alamat Email</label>
-                <input type="email" name="email" id="email" class="form-input" placeholder="admin@denim.com" value="{{ old('email') }}" required autofocus>
+                <input type="email" name="email" id="email" class="form-input" placeholder="email" value="{{ old('email') }}" required autofocus>
                 @error('email')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
